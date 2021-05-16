@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
 import boto3
+import requests
+
 from datetime import datetime, timedelta
 import json
 import logging
 from pathlib import Path
-import requests
 import subprocess
 import sys
 import time
@@ -36,12 +37,6 @@ states = [
 ]
 
 OVERPASS_URL = "https://overpass-api.de/api/interpreter"
-
-MAPBOX_ACCESS_TOKEN = json.loads(Path("~/tokens.json").expanduser().read_bytes())[
-    "mapbox_secret"
-]
-MAPBOX_USERNAME = "jleedev"
-
 
 def osmtogeojson(x):
     cmd = subprocess.run(
@@ -95,57 +90,11 @@ def process_state(state, wikidata):
     return mbtiles_path
 
 
-MAPBOX_UPLOAD_CREDENTIAL_URL = (
-    f"https://api.mapbox.com/uploads/v1/{MAPBOX_USERNAME}/credentials"
-)
-MAPBOX_UPLOAD_URL = f"https://api.mapbox.com/uploads/v1/{MAPBOX_USERNAME}"
-
-
-def upload(state, mbtiles_path):
-    log.info("starting upload of %s", state)
-    r = requests.post(
-        MAPBOX_UPLOAD_CREDENTIAL_URL, params={"access_token": MAPBOX_ACCESS_TOKEN}
-    )
-    r.raise_for_status()
-    cred = r.json()
-    log.info("sending to s3")
-    s3 = boto3.client(
-        "s3",
-        aws_access_key_id=cred["accessKeyId"],
-        aws_secret_access_key=cred["secretAccessKey"],
-        aws_session_token=cred["sessionToken"],
-        region_name="us-east-1",
-    )
-    s3.put_object(Body=open(mbtiles_path, "rb"), Bucket=cred["bucket"], Key=cred["key"])
-    log.info("finalizing upload")
-    r = requests.post(
-        MAPBOX_UPLOAD_URL,
-        params={"access_token": MAPBOX_ACCESS_TOKEN},
-        json={"url": cred["url"], "tileset": f"{MAPBOX_USERNAME}.{state}-admin"},
-    )
-    r.raise_for_status()
-    upload_id = r.json()["id"]
-    return upload_id
-
-
-def poll_progress(upload_id):
-    log.info("waiting for upload to process")
-    r = requests.get(MAPBOX_UPLOAD_URL, params={"access_token": MAPBOX_ACCESS_TOKEN})
-    r.raise_for_status()
-    for o in r.json():
-        if o["id"] == upload_id:
-            return o["complete"]
-    raise IndexError(upload_id)
-
-
 def run(arg):
     log.info("starting up for %s", arg)
     for (state, wikidata) in arg:
         mbtiles_path = process_state(state, wikidata)
-        upload_id = upload(state, mbtiles_path)
-        while not poll_progress(upload_id):
-            time.sleep(15)
-    log.info("done")
+    log.info("produced %s", mbtiles_path)
 
 
 if __name__ == "__main__":
