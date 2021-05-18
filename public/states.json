@@ -1,0 +1,209 @@
+{
+  "name": "states",
+  "id": "ae8ef4a6-8ea7-4a64-af62-f73905f13806",
+  "version": 8,
+  "sources": {
+    "pa": {
+      "type": "vector",
+      "url": "https://twister.43foldrs.com/services/pa",
+      "attribution": "© OpenStreetMap contributors"
+    }
+  },
+  "layers": [
+    {
+      "id": "background",
+      "type": "background",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "background-color": "#efebe9"
+      }
+    },
+    {
+      "id": "pa-fill-8",
+      "source": "pa",
+      "source-layer": "pa",
+      "type": "fill",
+      "paint": {
+        "fill-color": [
+          "case",
+          [
+            "==",
+            [
+              "get",
+              "border_type"
+            ],
+            "township"
+          ],
+          "#ffffff",
+          [
+            "==",
+            [
+              "get",
+              "border_type"
+            ],
+            "borough"
+          ],
+          "#ffffcc",
+          [
+            "==",
+            [
+              "get",
+              "border_type"
+            ],
+            "city"
+          ],
+          "#ffff00",
+          "#ff00ff"
+        ]
+      },
+      "filter": [
+        "==",
+        [
+          "get",
+          "admin_level"
+        ],
+        "8"
+      ],
+      "layout": {
+        "visibility": "visible"
+      }
+    },
+    {
+      "id": "pa-fill-cdp",
+      "source": "pa",
+      "source-layer": "pa",
+      "type": "fill",
+      "paint": {
+        "fill-color": [
+          "literal",
+          "#ffcccc"
+        ]
+      },
+      "filter": [
+        "==",
+        [
+          "get",
+          "boundary"
+        ],
+        "census"
+      ],
+      "layout": {
+        "visibility": "visible"
+      }
+    },
+    {
+      "id": "pa-line",
+      "source": "pa",
+      "source-layer": "pa",
+      "type": "line",
+      "paint": {
+        "line-width": [
+          "case",
+          [
+            "==",
+            [
+              "get",
+              "admin_level"
+            ],
+            "6"
+          ],
+          1,
+          0.25
+        ],
+        "line-color": [
+          "case",
+          [
+            "==",
+            [
+              "get",
+              "admin_level"
+            ],
+            "8"
+          ],
+          [
+            "case",
+            [
+              "!",
+              [
+                "has",
+                "border_type"
+              ]
+            ],
+            "#0000ff",
+            "#000000"
+          ],
+          [
+            "==",
+            [
+              "get",
+              "admin_level"
+            ],
+            "6"
+          ],
+          "#000000",
+          "#00ff00"
+        ]
+      },
+      "layout": {
+        "visibility": "visible"
+      },
+      "filter": [
+        "all",
+        [
+          "has",
+          "admin_level"
+        ],
+        [
+          "!=",
+          [
+            "get",
+            "admin_level"
+          ],
+          "10"
+        ]
+      ]
+    },
+    {
+      "id": "pa-line-dash",
+      "source": "pa",
+      "source-layer": "pa",
+      "type": "line",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-dasharray": [
+          15,
+          15
+        ],
+        "line-width": 0.25,
+        "line-opacity": 0.75
+      },
+      "filter": [
+        "!",
+        [
+          "all",
+          [
+            "has",
+            "admin_level"
+          ],
+          [
+            "!=",
+            [
+              "get",
+              "admin_level"
+            ],
+            "10"
+          ]
+        ]
+      ]
+    }
+  ],
+  "center": [
+    -80,
+    40.44
+  ],
+  "zoom": 6
+}

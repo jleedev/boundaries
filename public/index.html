@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang=en>
+  <head>
+    <meta name=viewport content="width=device-width">
+    <script src="https://cdn.maptiler.com/maplibre-gl-js/v1.14.0/maplibre-gl.js"></script>
+    <link href="https://cdn.maptiler.com/maplibre-gl-js/v1.14.0/maplibre-gl.css" rel="stylesheet">
+    <style>
+body {
+  overflow: hidden;
+}
+#map {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+    </style>
+  </head>
+    <body>
+      <div id=map></div>
+ <script type=module>
+   const map = new maplibregl.Map({
+    container: 'map',
+    style: 'states.json',
+    center: [-78, 41],
+    zoom: 7,
+   });
+   document.querySelector('canvas').focus();
+ </script>
