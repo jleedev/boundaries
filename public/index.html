@@ -2,20 +2,22 @@
 <html lang="en" style="height:100%">
 <head>
 <meta name="viewport" content="width=device-width">
-<script src="https://cdn.maptiler.com/maplibre-gl-js/v1.14.0/maplibre-gl.js"></script>
-<link href="https://cdn.maptiler.com/maplibre-gl-js/v1.14.0/maplibre-gl.css" rel="stylesheet">
+
+<script src='https://unpkg.com/maplibre-gl@2.0.1/dist/maplibre-gl.js'></script>
+<link href='https://unpkg.com/maplibre-gl@2.0.1/dist/maplibre-gl.css' rel='stylesheet' />
+
 <title>states</title>
 </head>
 <body style="display:flex;height:100%;margin:0">
 <div id="map" style="flex:1"></div>
 <script type="module">
-   const map = new maplibregl.Map({
+   const map = window.map = new maplibregl.Map({
     container: 'map',
     style: 'states.json',
     center: [-77.5, 41],
     zoom: 7,
    });
-   document.querySelector('canvas').focus();
+   map.getCanvas().focus();
 </script>
 </body>
 </html>
