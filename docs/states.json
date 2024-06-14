@@ -10,10 +10,12 @@
     "raster-tiles": {
       "type": "raster",
       "tiles": [
-        "https://stamen-tiles.a.ssl.fastly.net/toner/{z}/{x}/{y}.png"
+        "https://tiles.stadiamaps.com/tiles/stamen_toner/{z}/{x}/{y}{ratio}.png"
       ],
       "tileSize": 256,
-      "attribution": "Map tiles by <a target=\"_top\" rel=\"noopener\" href=\"http://stamen.com\">Stamen Design</a>, under <a target=\"_top\" rel=\"noopener\" href=\"http://creativecommons.org/licenses/by/3.0\">CC BY 3.0</a>. Data by <a target=\"_top\" rel=\"noopener\" href=\"http://openstreetmap.org\">OpenStreetMap</a>, under <a target=\"_top\" rel=\"noopener\" href=\"http://creativecommons.org/licenses/by-sa/3.0\">CC BY SA</a>"
+      "maxzoom": 21,
+      "minzoom": 0,
+      "attribution": "\u003Ca href=\"https://stadiamaps.com/\" target=\"_blank\"\u003E&copy; Stadia Maps\u003C/a\u003E &amp; \u003Ca href=\"https://stamen.com\" target=\"_blank\"\u003E&copy; Stamen Design\u003C/a\u003E; \u003Ca href=\"https://openmaptiles.org/\" target=\"_blank\"\u003E&copy; OpenMapTiles\u003C/a\u003E; \u003Ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003E&copy; OpenStreetMap\u003C/a\u003E., "
     }
 
   },
